@@ -9,9 +9,18 @@ object Day1 {
     }.count(_ equals true)
   }
 
+  def exercise2(input: List[Int]): Int = {
+    exercise1(input.sliding(3).map {
+      case List(a, b, c) => a + b + c
+      case List(_,_) => 0
+      case List(_) => 0
+    }.toList)
+  }
+
 
   def main(args: Array[String]): Unit = {
     val inputArray = Source.fromResource("day1.txt").getLines.toList.map(_.toInt)
     println(exercise1(inputArray))
+    println(exercise2(inputArray))
   }
 }
