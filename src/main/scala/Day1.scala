@@ -19,7 +19,7 @@ object Day1 {
 
 
   def main(args: Array[String]): Unit = {
-    val inputArray = Source.fromResource("day1.txt").getLines.toList.map(_.toInt)
+    val inputArray = args.map(_.toInt).toList
     println(exercise1(inputArray))
     println(exercise2(inputArray))
   }
