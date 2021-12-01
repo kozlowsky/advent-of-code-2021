@@ -1,5 +1,3 @@
-import scala.io.Source
-
 object Day1 {
 
   def exercise1(input: List[Int]): Int = {
