@@ -11,11 +11,9 @@ object Day4 {
 
       updateBingoBoardsState(bingoNumbers.head, bingoTables, currentState)
 
-      val winningTableState = currentState.zipWithIndex.find(e => isTableWinning(e._1))
-      if (winningTableState.isDefined) {
-        val sumOfNonPicked = bingoTables(winningTableState.get._2).zipWithIndex.map(e => e._1.zipWithIndex.filter(f => winningTableState.get._1(e._2)(f._2) == 0).map(_._1).sum).sum
-
-        return bingoNumbers.head * sumOfNonPicked
+      val winningBoardState = currentState.zipWithIndex.find(e => isTableWinning(e._1))
+      if (winningBoardState.isDefined) {
+        return calculateWinningValue(bingoNumbers.head, bingoTables(winningBoardState.get._2), winningBoardState.get._1)
       }
 
       exercise1Helper(bingoNumbers.tail, bingoTables, currentState)
@@ -24,8 +22,14 @@ object Day4 {
     exercise1Helper(bingoNumbers, bingoTables, Array.ofDim[Int](bingoTables.length, bingoTables.head.length, bingoTables.head(0).length))
   }
 
-  def isTableWinning(bingoTable: Array[Array[Int]]): Boolean = {
+  private def isTableWinning(bingoTable: Array[Array[Int]]): Boolean = {
     bingoTable.map(_.sum).contains(5) || bingoTable.transpose.map(_.sum).contains(5)
+  }
+
+  private def calculateWinningValue(currentNumber: Int, currentBoard: Array[Array[Int]], currentBoardState: Array[Array[Int]]): Int = {
+    val sumOfNonPicked = currentBoard.zipWithIndex.map(e => e._1.zipWithIndex.filter(f => currentBoardState(e._2)(f._2) == 0).map(_._1).sum).sum
+
+    currentNumber * sumOfNonPicked
   }
 
   def updateBingoBoardsState(currentBingoNumber: Int, bingoTables: List[Array[Array[Int]]], currentState: Array[Array[Array[Int]]]): Unit = {
